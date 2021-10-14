@@ -3,8 +3,8 @@ import binascii
 import ed25519
 
 # Encode int into big endian binary on 4 bytes
-def encode_entier(i):
-    return i.to_bytes(4, 'big')
+def encode_entier(i, nbBytes=4):
+    return i.to_bytes(nbBytes, 'big')
 
 
 def count_zero_prefix(val):
