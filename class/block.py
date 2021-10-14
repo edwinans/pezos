@@ -34,12 +34,22 @@ class Block:
         return self.level + self.predecessor + self.timestamp + self.operations_hash + self.context_hash + self.signature
 
     def printBlock(self):
-        print(level.hex())
-        print(predecessor.hex())
-        print(timestamp.hex())
-        print(operations_hash.hex())
-        print(context_hash.hex())
-        print(signature.hex())
+        levelNumber = int.from_bytes(self.level,byteorder='big')
+        print("level :\t\t\t\t",levelNumber)
+        print("predecessor :\t\t\t",predecessor.hex())
+        date = datetime.utcfromtimestamp(int.from_bytes(timestamp,byteorder='big'))
+        print("timestamp :\t\t\t", date)
+        print("operation_hash :\t\t",operations_hash.hex())
+        print("context_hash :\t\t\t",context_hash.hex())
+        print("signature :\t\t\t",signature.hex())
+    
+    def printBlockHex(self):
+        print("level :\t\t\t\t",level.hex())
+        print("predecessor :\t\t\t",predecessor.hex())
+        print("timestamp :\t\t\t",timestamp.hex())
+        print("operation_hash :\t\t",operations_hash.hex())
+        print("context_hash :\t\t\t",context_hash.hex())
+        print("signature :\t\t\t",signature.hex())
 
 level = util.encode_entier(44)
 predecessor = bytearray.fromhex("1c80203a30e5de4d980cc555131d1b4a4750edc82c0c443179d88de1ae4f6cdf")
@@ -57,4 +67,6 @@ blockVal = b1.getBlockValue()
 
 print(blockVal.hex())
 
+b1.printBlock()
+# b1.printBlockHex()
 # print(timestamp)
