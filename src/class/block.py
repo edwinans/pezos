@@ -61,14 +61,14 @@ class Block:
         print("signature :\t\t\t", signature.hex())
 
 
-level = util.encode_entier(44)
+level = util.encode_int(44)
 predecessor = bytearray.fromhex(
     "1c80203a30e5de4d980cc555131d1b4a4750edc82c0c443179d88de1ae4f6cdf"
 )
 
 date = datetime(2021, 10, 10, hour=15, minute=21, second=9, tzinfo=timezone.utc)
 ts = math.floor(date.timestamp())
-timestamp = util.encode_entier(ts, nbBytes=8)
+timestamp = util.encode_int(ts, size=8)
 
 operations_hash = bytearray.fromhex(
     "0000000000000000000000000000000000000000000000000000000000000000"
