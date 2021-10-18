@@ -1,3 +1,5 @@
+from datetime import datetime, timezone
+
 class State:
     def __init__(
         self, dictator_pkey, predecessor_timestamp, nb_bytes_in_next_sequence, accounts
@@ -31,6 +33,14 @@ class State:
             acc = Account(userpkey, predecessorpez, timestampez, operationhashpez, contexthashpez, signaturepez)
             self.accounts.append[acc]
 
+    def print_state(self):
+        print("dictator_pkey :\t\t\t\t", self.dictator_pkey)
+        date = datetime.utcfromtimestamp(int.from_bytes(self.predecessor_timestamp, byteorder="big"))
+        
+        print("- - - Accounts - - -")
+        for acc in self.accounts:
+            acc.print_account()
+
 class Account:
     def __init__(
         self, user_pkey, predecessorp, timestampp, operations_hashp, context_hashp, signaturep
@@ -41,3 +51,13 @@ class Account:
         self.operations_hashp = operations_hashp
         self.context_hashp = context_hashp
         self.signaturep = signaturep
+
+    def print_account(self):
+        print("user_pkey :\t\t\t\t", self.user_pkey.hex())
+        print("predecessorp :\t\t\t", self.predecessorp.hex())
+        date = datetime.utcfromtimestamp(int.from_bytes(self.timestamp, byteorder="big"))
+        print("timestamp :\t\t\t", date)
+        print("operation_hash :\t\t", self.operations_hashp.hex())
+        print("context_hash :\t\t\t", self.context_hashp.hex())
+        print("signature :\t\t\t", self.signaturep.hex())
+
