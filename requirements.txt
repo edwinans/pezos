@@ -1,2 +1,2 @@
 pyblake2==1.1.2
-ed25519==1.5
+cryptography==2.8
