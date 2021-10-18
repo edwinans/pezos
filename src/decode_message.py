@@ -54,5 +54,3 @@ def decode_operations(operation):
     tag = util.decode_entier(operation[0:2])
     if tag == 1 or tag == 2 or tag == 3 or tag == 4:
         return operation[2:]
-
-
