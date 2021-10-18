@@ -9,6 +9,7 @@ class State:
         self.dictator_pkey = dictator_pkey
         self.predecessor_timestamp = predecessor_timestamp
         self.nb_bytes_in_next_sequence = nb_bytes_in_next_sequence
+        self.accounts_binaries = accounts
         self.accounts = []
 
         cpt = 0
@@ -44,7 +45,9 @@ class State:
         print("- - - Accounts - - -")
         for acc in self.accounts:
             acc.print_account()
-
+    
+    def get_state_value(self):
+        return self.dictator_pkey + self.predecessor_timestamp + self.nb_bytes_in_next_sequence + self.accounts_binaries
 
 class Account:
     def __init__(
