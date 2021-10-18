@@ -8,7 +8,6 @@ def encode_pk(pk):
     pk_b = bytes(bytearray.fromhex(pk))
     return encode_int(32, 2) + pk_b
 
-
 def encode_sig(data, sk, pk):
     sk_b = bytes(bytearray.fromhex(sk))
     pk_b = bytes(bytearray.fromhex(pk))
@@ -73,17 +72,3 @@ def verify_signature(publicKey, messageToVerify, signature):
         return True
     except ed25519.BadSignatureError:
         return False
-
-
-# Example to verify signature from key encoded in hex
-""" 
-
-verifying_key = ed25519.VerifyingKey(pubkey.hex(), encoding="hex")
-    try:
-        print("Line : ", cpt, " | Good signature")
-        verifying_key.verify(sign.hex(), msg, encoding='hex')
-    except ed25519.BadSignatureError:
-        print("Line : ", cpt, " | Bad signature")
-        badSignatureLines.append(cpt) 
-
-"""
