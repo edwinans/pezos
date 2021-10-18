@@ -1,6 +1,3 @@
-import sys
-sys.path.append("../")
-import util
 
 class Operation:
     def __init__(

@@ -3,7 +3,7 @@ import util
 
 from model.state import State
 from model.block import Block
-from model.Operation import Operation
+from model.operation import Operation
 
 
 def decode_block(msg):
