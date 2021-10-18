@@ -2,6 +2,7 @@ import pyblake2 as blake
 import binascii
 from cryptography.hazmat.primitives.asymmetric import ed25519
 import hashlib
+import ed25519 as old_ed
 
 
 def encode_pk(pk):

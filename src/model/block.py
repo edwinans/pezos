@@ -1,9 +1,11 @@
 import sys
 import math
 from datetime import datetime, timezone
+import ed25519 as old_ed
 
 sys.path.append("../")
 import util
+import connection
 
 import encode_message
 
@@ -20,20 +22,91 @@ class Block:
         self.signature = signature
 
     def verify_predecessor(self):
-        return
+        print("- - - - - -")
+        print("Verify predecessor")
+        levelNumber = int.from_bytes(self.level, byteorder="big")
+        b_pred = connection.get_block(levelNumber-1)
+        b_pred_hash = util.hash(b_pred.get_block_value())
+
+        if(self.predecessor == b_pred_hash):
+            print("OK")
+            return True
+        else:
+            print("FAILED")
+            return False
 
     def verify_timestamp(self):
-        return
+        print("- - - - - -")
+        print("Verify timestamp")
+
+        levelNumber = int.from_bytes(self.level, byteorder="big")
+        state_block = connection.get_block_state(levelNumber)
+        
+        timestamp_pred = int.from_bytes(state_block.predecessor_timestamp, byteorder="big")
+        if(int.from_bytes(self.timestamp, byteorder="big") >= timestamp_pred + 600):
+            print("OK")
+            return True
+        else:
+            print("FAILED")
+            return False
 
     def verify_operations_hash(self):
         return
 
     def verify_state_hash(self):
-        return
+        print("- - - - - -")
+        print("Verify state hash")
+        levelNumber = int.from_bytes(self.level, byteorder="big")
+        state_block = connection.get_block_state(levelNumber)
+        state_block_hash = util.hash(state_block.get_state_value())
+        
+        if(self.state_hash == state_block_hash):
+            print("OK")
+            return True
+        else:
+            print("FAILED")
+            return False
 
     def verify_signature(self):
-        return
+        print("- - - - - -")
+        print("Verify signature")
+        levelNumber = int.from_bytes(self.level, byteorder="big")
+        state_block = connection.get_block_state(levelNumber)
 
+        verifyingkeybin = state_block.dictator_pkey
+        
+        block_with_out_sign_value = self.level + self.predecessor + self.timestamp + self.operations_hash + self.state_hash
+        block_without_sign_hash = util.hash(block_with_out_sign_value)
+
+        
+        verifying_key = old_ed.VerifyingKey(verifyingkeybin.hex(), encoding="hex")
+        try:
+            verifying_key.verify(self.signature.hex(), block_without_sign_hash, encoding='hex')
+            print("OK")
+            return True
+        except old_ed.BadSignatureError:
+            print("FAILED")
+            return False
+            
+
+    def verify_all(self):
+        print("- - - - - - - - - - - - - - - - - - - - - - - - -")
+        if(self.verify_predecessor()):
+            print("Bad predecessor")
+            # Send message bad operation predecessor
+        elif self.verify_timestamp():
+            print("Bad timestamp")
+            # Send message bad timestamp
+        elif self.verify_operations_hash():
+            print("Bad operation hash")
+            # Send message bad operation hash
+        elif self.verify_state_hash():
+            print("Bad state hash")
+            # Send message bad state hash
+        elif self.verify_signature():
+            print("Bad signature")
+            # Send message bad signature
+        print("- - - - - - - - - - - - - - - - - - - - - - - - -")
     def get_block_value(self):
         return (
             self.level
