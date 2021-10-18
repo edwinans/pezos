@@ -5,6 +5,8 @@ from datetime import datetime, timezone
 sys.path.append("../")
 import util
 
+import encode_message
+
 
 class Block:
     def __init__(
@@ -88,3 +90,5 @@ print(blockVal.hex())
 b1.print_block()
 # b1.print_block_hex()
 # print(timestamp)
+print("-----------------------")
+print(blockVal)
