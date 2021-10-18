@@ -11,13 +11,6 @@ def encode_get_currrent_head():
     return encode_message(util.encode_int(1, size=2))
 
 
-def encode_current_head(block):
-    return (
-            util.encode_int(2, size=2)
-            + block.get_block_value()
-    )
-
-
 def encode_get_block(level):
     level_b = util.encode_int(level,4)
     return (

@@ -22,25 +22,27 @@ def connect():
     print('Received seed <- ', seed.hex())
 
 def get_current_head():
-    get_hd = encode_message.encode_get_currrent_head()
+    get_hd = em.encode_get_currrent_head()
     s.send(get_hd)
-    head = s.recv(1024)
-    print('Received head <- ', head.hex())
-    head_block = dm.decode_block(dm.decode_message(head))
+    buf = s.recv(1024)
+    print('Received head <- ', buf.hex())
+    head_block = dm.decode_block(buf)
     return head_block
 
 def get_block(level):
     msg = encode_message(em.encode_get_block(level))
     s.send(msg)
     buf = s.recv(1024)
-    block = dm.decode_block(dm.decode_message(buf))
+    print('Received block <- ', buf.hex())
+    block = dm.decode_block(buf)
     return block
 
 def get_block_state(level):
     msg = encode_message(em.encode_get_state(level))
     s.send(msg)
     buf = s.recv(1024)
-    state = dm.decode_state(dm.decode_message(buf))
+    print('Received block_state <- ', buf.hex())
+    state = dm.decode_state(buf)
     return state
 
 def disconnect():
