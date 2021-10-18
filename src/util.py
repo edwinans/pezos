@@ -2,10 +2,16 @@ import pyblake2 as blake
 import binascii
 import ed25519
 from cryptography.hazmat.primitives.asymmetric import ed25519
+from ecpy.eddsa import EDDSA
+from ecpy.curves import Curve
+from ecpy.keys import *
+import hashlib
+
 
 def encode_pk(pk):
     pk_b = hex_to_bytes(pk, 32)
     return encode_int(32, 2) + pk_b
+
 
 def encode_sig(data, sk, pk):
     sk_b = hex_to_bytes(sk, 32)
@@ -17,13 +23,26 @@ def encode_sig(data, sk, pk):
     return encode_int(64, 2) + sig
 
 
+def sig2(data, sk, pk):
+    cv = Curve.get_curve('Ed25519')
+    secret = ECPrivateKey(int(sk, 16), cv)
+    pkk = EDDSA.get_public_key(secret)
+    signer = EDDSA(hashlib.sha512)
+    s = signer.sign(msg=data, pv_key=secret)
+    print(signer.verify(data, s, pkk))
+    return s
+
 def hex_to_bytes(s, size=4):
     i = int(s, 16)
     return encode_int(i, size)
 
+def read_keys():
+    f = open("../keys")
+    pk = f.readline()
+    sk = f.readline()
+    return pk, sk
+
 # Encode int into big endian binary on 4 bytes
-
-
 def encode_int(i, size=4):
     return i.to_bytes(size, 'big')
 
