@@ -7,6 +7,10 @@ def encode_entier(i, nbBytes=4):
     return i.to_bytes(nbBytes, 'big')
 
 
+# Decode bytes into int
+def decode_entier(b):
+    return int.from_bytes(b, 'big')
+
 def count_zero_prefix(val):
     cpt = 1
     for i in val:
