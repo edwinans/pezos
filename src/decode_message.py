@@ -1,10 +1,7 @@
-
 import util
-import sys
 
-sys.path.append("./class")
-import State
-import Block
+from model.state import State
+from model.block import Block
 
 
 def decode_block(block):
@@ -12,6 +9,8 @@ def decode_block(block):
         Block(block[0:4], block[4:36], block[36:44], block[44:76], block[76:108], block[108:172])
     )
 
+def decode_state(state):
+    pass
 
 def decode_message(message):
     return (

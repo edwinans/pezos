@@ -3,6 +3,7 @@
 import socket
 from encode_message import encode_message
 import encode_message as em
+import decode_message as dm
 import util
 
 HOST = '78.194.168.67'  
@@ -25,15 +26,22 @@ def get_current_head():
     s.send(get_hd)
     head = s.recv(1024)
     print('Received head <- ', head.hex())
-    return head
+    head_block = dm.decode_block(dm.decode_message(head))
+    return head_block
 
 def get_block(level):
     msg = encode_message(em.encode_get_block(level))
     s.send(msg)
-    block = s.recv(1024)
-    return block 
+    buf = s.recv(1024)
+    block = dm.decode_block(dm.decode_message(buf))
+    return block
 
-
+def get_block_state(level):
+    msg = encode_message(em.encode_get_state(level))
+    s.send(msg)
+    buf = s.recv(1024)
+    state = dm.decode_state(dm.decode_message(buf))
+    return state
 
 def disconnect():
     s.close()

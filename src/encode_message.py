@@ -28,8 +28,8 @@ def encode_get_block(level):
 
 def encode_get_block_by_integer_level(level):
     return (
-            util.encode_entier(3, nbBytes=2)
-            + util.encode_entier(level, nbBytes=4)
+            util.encode_int(3, nbBytes=2)
+            + util.encode_int(level, nbBytes=4)
     )
 
 
@@ -49,22 +49,23 @@ def encode_get_block_operations(level):
 
 def encode_get_block_operations_by_integer_level(level):
     return (
-            util.encode_entier(5, nbBytes=2)
-            + util.encode_entier(level, nbBytes=4)
+            util.encode_int(5, nbBytes=2)
+            + util.encode_int(level, nbBytes=4)
     )
 
 
 def encode_get_state(level):
+    level_b = util.encode_int(level)
     return (
         util.encode_int(7, size=2)
-        + level
+        + level_b
     )
 
 
 def encode_get_state_by_integer(level):
     return (
-        util.encode_entier(7, nbBytes=2)
-        + util.encode_entier(level, nbBytes=4)
+        util.encode_int(7, nbBytes=2)
+        + util.encode_int(level, nbBytes=4)
     )
 
 
