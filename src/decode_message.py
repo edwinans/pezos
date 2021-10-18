@@ -9,8 +9,10 @@ from model.operation import Operation
 def decode_block(msg):
     block = decode_message(msg)
     return (
-        Block(block[0:4], block[4:36], block[36:44], block[44:76], block[76:108], block[108:172])
+        Block(block[0:4], block[4:36], block[36:44],
+              block[44:76], block[76:108], block[108:172])
     )
+
 
 def decode_state(msg):
     state = decode_message(msg)
@@ -20,20 +22,29 @@ def decode_state(msg):
     accounts = state[44:]
     return State(pk, pred_time, nb_bytes, accounts)
 
+
 def decode_operation_list(message):
     operations_list = []
-    i = 0
+    tag = util.decode_entier(message[:2])
+    size = util.decode_entier(message[2:4])
+    assert size == len(message) - 4
+    assert tag == 6
+    i = 4
     while i < len(message):
         tag = util.decode_entier(message[i:i+2])
-        i+=2
         if tag == 1 or tag == 3 or tag == 4:
-            operations_list.append(Operation(message[i-2:i], message[i:i+32], None))
-            i += 32
+            operations_list.append(Operation(
+                message[i:i+2], message[i+2:i+34], None, message[i+34:i+66], message[i+66:i+130]))
+            i += 130
         if tag == 2:
-           operations_list.append(Operation(message[i-2:i],None, message[i:i+8]))
-           i += 8
+            operations_list.append(
+                Operation(message[i:i+2], None, message[i+2:i+10], message[i+10:i+42], message[i+42:i+106]))
+            i += 106
         if tag == 5:
-            operations_list.append(Operation(message[i - 2:i], None, None))
+            operations_list.append(
+                Operation(message[i:i+2], None, None, message[i+2:i+34], message[i+34:i+98]))
+            i += 98
+
     return operations_list
 
 
@@ -41,6 +52,7 @@ def decode_message(message):
     return (
         message[2:]
     )
+
 
 def decode_applicative_message(message):
     tag = util.decode_entier(message[0:2])

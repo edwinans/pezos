@@ -45,5 +45,16 @@ def get_block_state(level):
     state = dm.decode_state(buf)
     return state
 
+def get_block_operations(level):
+    msg = encode_message(em.encode_get_block_operations(level))
+    s.send(msg)
+    buf = s.recv(1024)
+    print('Received block_operations <- ', buf.hex())
+    operations = dm.decode_operation_list(buf)
+    return operations
+
+def inject_operation(op):
+    pass
+
 def disconnect():
     s.close()

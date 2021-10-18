@@ -34,9 +34,10 @@ def encode_block(block):
 
 
 def encode_get_block_operations(level):
+    level_b = util.encode_int(level)
     return (
             util.encode_int(5, size=2)
-            + level
+            + level_b
     )
 
 
