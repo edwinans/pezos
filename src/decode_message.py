@@ -1,18 +1,24 @@
-
 import util
-import sys
-
-sys.path.append("./class")
-import State
-import Block
-import Operation
 
 
-def decode_block(block):
+from model.state import State
+from model.block import Block
+from model.Operation import Operation
+
+
+def decode_block(msg):
+    block = decode_message(msg)
     return (
         Block(block[0:4], block[4:36], block[36:44], block[44:76], block[76:108], block[108:172])
     )
 
+def decode_state(msg):
+    state = decode_message(msg)
+    pk = state[:32]
+    pred_time = state[32:40]
+    nb_bytes = state[40:44]
+    accounts = state[44:]
+    return State(pk, pred_time, nb_bytes, accounts)
 
 def decode_operation_list(message):
     operations_list = []
