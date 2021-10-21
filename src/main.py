@@ -6,7 +6,7 @@ if __name__ == '__main__':
     c.connect()
     b1 = c.get_current_head()
     b1.print_block()
-    ops = c.get_block_operations(1010)
+    ops = c.get_block_operations(1400)
     print_operations(ops)
 
     c.disconnect()

@@ -36,7 +36,7 @@ def encode_block(block):
 
 def encode_get_block_operations(level):
     level_b = util.encode_int(level)
-    return (
+    return encode_message(
         util.encode_int(5, size=2)
         + level_b
     )

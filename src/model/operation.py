@@ -1,6 +1,7 @@
 from datetime import datetime
 import util
 
+
 def print_operations(ops):
     print("- - - Operations - - -")
     for op in ops:
@@ -8,7 +9,7 @@ def print_operations(ops):
 
 
 class Operation:
-    def __init__(self, tag, hash, time, user_pk, signature, sk):
+    def __init__(self, tag, user_pk, hash=None, time=None, signature=None, sk=None):
         self.tag = util.encode_int(tag, 2)
         self.hash = hash
         self.time = time
@@ -16,12 +17,12 @@ class Operation:
         if signature:
             self.signature = signature
         else:
-            data = tag 
+            data = tag
             if hash:
-                data += hash 
+                data += hash
             if time:
-                data += time 
-            data += user_pk 
+                data += time
+            data += user_pk
             self.signature = util.sign(data, sk)
 
     def get_bytes():

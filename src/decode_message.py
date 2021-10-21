@@ -34,15 +34,15 @@ def decode_operation_list(message):
         tag = util.decode_entier(message[i:i+2])
         if tag == 1 or tag == 3 or tag == 4:
             operations_list.append(Operation(
-                message[i:i+2], message[i+2:i+34], None, message[i+34:i+66], message[i+66:i+130]))
+                tag=tag, hash=message[i+2:i+34], user_pk=message[i+34:i+66], signature=message[i+66:i+130]))
             i += 130
         if tag == 2:
             operations_list.append(
-                Operation(message[i:i+2], None, message[i+2:i+10], message[i+10:i+42], message[i+42:i+106]))
+                Operation(tag=tag, time=message[i+2:i+10], user_pk=message[i+10:i+42], signature=message[i+42:i+106]))
             i += 106
         if tag == 5:
             operations_list.append(
-                Operation(message[i:i+2], None, None, message[i+2:i+34], message[i+34:i+98]))
+                Operation(tag=tag, user_pk=message[i+2:i+34], signature=message[i+34:i+98]))
             i += 98
 
     return operations_list
