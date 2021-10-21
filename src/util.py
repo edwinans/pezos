@@ -18,6 +18,12 @@ def encode_sig(data, sk, pk):
     sig = private_key.sign(h_data)
     return encode_int(64, 2) + sig
 
+def sign(data, sk):
+    sk_b = bytes(bytearray.fromhex(sk))
+    private_key = ed25519.Ed25519PrivateKey.from_private_bytes(sk_b)
+    sig = private_key.sign(data)
+    return sig
+
 def read_keys():
     f = open("../keys")
     pk = f.readline()

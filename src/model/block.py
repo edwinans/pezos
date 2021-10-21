@@ -1,13 +1,10 @@
 import sys
-import math
-from datetime import datetime, timezone
+from datetime import datetime
 import ed25519 as old_ed
 
 sys.path.append("../")
 import util
 import connection
-
-import encode_message
 
 
 class Block:

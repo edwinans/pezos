@@ -3,54 +3,55 @@ import util
 
 def encode_message(message):
     return (
-            util.encode_int(len(message), size=2)
-            + message
+        util.encode_int(len(message), size=2)
+        + message
     )
+
 
 def encode_get_currrent_head():
     return encode_message(util.encode_int(1, size=2))
 
 
 def encode_get_block(level):
-    level_b = util.encode_int(level,4)
-    return (
-            util.encode_int(3, size=2)
-            + level_b
+    level_b = util.encode_int(level, 4)
+    return encode_message(
+        util.encode_int(3, size=2)
+        + level_b
     )
 
 
 def encode_get_block_by_integer_level(level):
     return (
-            util.encode_int(3, nbBytes=2)
-            + util.encode_int(level, nbBytes=4)
+        util.encode_int(3, nbBytes=2)
+        + util.encode_int(level, nbBytes=4)
     )
 
 
 def encode_block(block):
     return (
-            util.encode_int(4, size=2)
-            + block.get_block_value()
+        util.encode_int(4, size=2)
+        + block.get_block_value()
     )
 
 
 def encode_get_block_operations(level):
     level_b = util.encode_int(level)
     return (
-            util.encode_int(5, size=2)
-            + level_b
+        util.encode_int(5, size=2)
+        + level_b
     )
 
 
 def encode_get_block_operations_by_integer_level(level):
     return (
-            util.encode_int(5, nbBytes=2)
-            + util.encode_int(level, nbBytes=4)
+        util.encode_int(5, nbBytes=2)
+        + util.encode_int(level, nbBytes=4)
     )
 
 
 def encode_get_state(level):
     level_b = util.encode_int(level)
-    return (
+    return encode_message(
         util.encode_int(7, size=2)
         + level_b
     )
@@ -64,7 +65,7 @@ def encode_get_state_by_integer(level):
 
 
 def encode_block_operations(operations):
-    return (
+    return encode_message(
         util.encode_int(6, size=2)
         + util.encode_int(len(operations), size=2)
         + operations
@@ -79,8 +80,8 @@ def encode_block_state(state):
 
 
 def encode_inject_operation(operation):
-    return (
-        util.encode_int(8, size=2)
+    return encode_message(
+        util.encode_int(9, size=2)
         + operation
     )
 

@@ -1,5 +1,5 @@
 from datetime import datetime
-
+import util
 
 def print_operations(ops):
     print("- - - Operations - - -")
@@ -8,14 +8,31 @@ def print_operations(ops):
 
 
 class Operation:
-    def __init__(
-        self, tag, hash, time, user_pk, signature
-    ):
-        self.tag = tag
+    def __init__(self, tag, hash, time, user_pk, signature, sk):
+        self.tag = util.encode_int(tag, 2)
         self.hash = hash
         self.time = time
         self.user_pk = user_pk
-        self.signature = signature
+        if signature:
+            self.signature = signature
+        else:
+            data = tag 
+            if hash:
+                data += hash 
+            if time:
+                data += time 
+            data += user_pk 
+            self.signature = util.sign(data, sk)
+
+    def get_bytes():
+        res = self.tag
+        if self.hash:
+            res += self.hash
+        if self.time:
+            res += self.time
+        res += self.user_pk
+        res += self.signature
+        return res
 
     def print_operation(self):
         print("tag :\t\t\t", self.tag.hex())
