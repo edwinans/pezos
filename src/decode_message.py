@@ -25,13 +25,13 @@ def decode_state(msg):
 
 def decode_operation_list(message):
     operations_list = []
-    tag = util.decode_entier(message[:2])
-    size = util.decode_entier(message[2:4])
+    tag = util.decode_int(message[:2])
+    size = util.decode_int(message[2:4])
     assert size == len(message) - 4
     assert tag == 6
     i = 4
     while i < len(message):
-        tag = util.decode_entier(message[i:i+2])
+        tag = util.decode_int(message[i:i+2])
         if tag == 1 or tag == 3 or tag == 4:
             operations_list.append(Operation(
                 tag=tag, hash=message[i+2:i+34], user_pk=message[i+34:i+66], signature=message[i+66:i+130]))
@@ -55,7 +55,7 @@ def decode_message(message):
 
 
 def decode_applicative_message(message):
-    tag = util.decode_entier(message[0:2])
+    tag = util.decode_int(message[0:2])
     if tag == 2 or tag == 4:
         return decode_block(message[2:])
     if tag == 3 or tag == 5 or tag == 7:
@@ -69,6 +69,6 @@ def decode_applicative_message(message):
 
 
 def decode_operations(operation):
-    tag = util.decode_entier(operation[0:2])
+    tag = util.decode_int(operation[0:2])
     if tag == 1 or tag == 2 or tag == 3 or tag == 4:
         return operation[2:]

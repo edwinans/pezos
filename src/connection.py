@@ -4,7 +4,7 @@ import socket
 from encode_message import encode_message
 import encode_message as em
 import decode_message as dm
-from src.model.operation import Operation
+from model.operation import Operation
 import util
 
 HOST = '78.194.168.67'
@@ -68,27 +68,27 @@ def inject_operation(op):
 
 
 def inject_bad_predecessor(hash):
-    op = Operation(tag=1, hash=hash, pk=pk_bytes, sk=sk)
+    op = Operation(tag=1, hash=hash, user_pk=pk_bytes, sk=sk)
     inject_operation(op)
 
 
 def inject_bad_timestamp(time):
-    op = Operation(tag=2, time=time, pk=pk_bytes, sk=sk)
+    op = Operation(tag=2, time=time, user_pk=pk_bytes, sk=sk)
     inject_operation(op)
 
 
 def inject_bad_operations_hash(hash):
-    op = Operation(tag=3, hash=hash, pk=pk_bytes, sk=sk)
+    op = Operation(tag=3, hash=hash, user_pk=pk_bytes, sk=sk)
     inject_operation(op)
 
 
 def inject_bad_context_hash(hash):
-    op = Operation(tag=4, hash=hash, pk=pk_bytes, sk=sk)
+    op = Operation(tag=4, hash=hash, user_pk=pk_bytes, sk=sk)
     inject_operation(op)
 
 
 def inject_bad_signature():
-    op = Operation(tag=5, pk=pk_bytes, sk=sk)
+    op = Operation(tag=5, user_pk=pk_bytes, sk=sk)
     inject_operation(op)
 
 

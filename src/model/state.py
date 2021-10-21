@@ -1,6 +1,4 @@
-from datetime import datetime, timezone
-from sys import byteorder
-
+from datetime import datetime
 
 class State:
     def __init__(
@@ -41,6 +39,7 @@ class State:
         print("dictator_pkey :\t\t\t\t", self.dictator_pkey.hex())
         date = datetime.utcfromtimestamp(int.from_bytes(
             self.predecessor_timestamp, byteorder="big"))
+        print("predecessor timestamp :\t\t\t\t", date)
 
         print("- - - Accounts - - -")
         for acc in self.accounts:

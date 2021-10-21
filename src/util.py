@@ -36,7 +36,7 @@ def encode_int(i, size=4):
 
 
 # Decode bytes into int
-def decode_entier(b):
+def decode_int(b):
     return int.from_bytes(b, 'big')
 
 def count_zero_prefix(val):

@@ -1,11 +1,20 @@
 from datetime import datetime
 import util
 
-
 def print_operations(ops):
     print("- - - Operations - - -")
     for op in ops:
         op.print_operation()
+
+
+def operations_hash(ops):
+    size = len(ops)
+    if (size == 0):
+        return bytes(32)
+    elif (size == 1):
+        util.hash(ops[0])
+    else:
+        util.hash(operations_hash(ops[:size-1]) + util.hash(ops[size-1]))
 
 
 class Operation:
@@ -17,7 +26,7 @@ class Operation:
         if signature:
             self.signature = signature
         else:
-            data = tag
+            data = self.tag
             if hash:
                 data += hash
             if time:
@@ -25,7 +34,7 @@ class Operation:
             data += user_pk
             self.signature = util.sign(data, sk)
 
-    def get_bytes():
+    def get_bytes(self):
         res = self.tag
         if self.hash:
             res += self.hash
