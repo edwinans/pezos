@@ -51,8 +51,7 @@ class Operation:
         if self.hash:
             print("hash :\t\t\t", self.hash.hex())
         if self.time:
-            date = datetime.utcfromtimestamp(
-                int.from_bytes(self.time, byteorder="big"))
+            date = util.decode_time(self.time)
             print("time :\t\t\t", date)
         print("user_pk :\t\t", self.user_pk.hex())
         print("signature :\t\t", self.signature.hex())

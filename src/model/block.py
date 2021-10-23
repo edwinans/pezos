@@ -41,13 +41,14 @@ class Block:
         level = self.get_level()
         state_block = ct.get_block_state(level)
         
-        timestamp_pred = int.from_bytes(state_block.predecessor_timestamp, byteorder="big")
-        if(int.from_bytes(self.timestamp, byteorder="big") >= timestamp_pred + 600):
+        timestamp_pred = util.decode_int(state_block.predecessor_timestamp)
+        ts = util.decode_int(self.timestamp)
+        if(ts >= timestamp_pred + 600):
             print("TIMESTAMP OK")
             return True, self.timestamp
         else:
             print("BAD TIMESTAMP")
-            return False, timestamp_pred + 600
+            return False, util.encode_int(timestamp_pred + 600, 8)
 
     def verify_operations_hash(self):
         level = self.get_level()
@@ -130,7 +131,7 @@ class Block:
         level = self.get_level()
         print("level :\t\t\t\t", level)
         print("predecessor :\t\t\t", self.predecessor.hex())
-        date = datetime.utcfromtimestamp(int.from_bytes(self.timestamp, byteorder="big"))
+        date = util.decode_time(self.timestamp)
         print("timestamp :\t\t\t", date)
         print("operation_hash :\t\t", self.operations_hash.hex())
         print("state_hash :\t\t\t", self.state_hash.hex())

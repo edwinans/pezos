@@ -1,7 +1,7 @@
 import pyblake2 as blake
 from cryptography.hazmat.primitives.asymmetric import ed25519
 import ed25519 as old_ed
-
+from datetime import datetime
 
 def encode_pk(pk):
     pk_b = bytes(bytearray.fromhex(pk))
@@ -37,6 +37,10 @@ def encode_int(i, size=4):
 # Decode bytes into int
 def decode_int(b):
     return int.from_bytes(b, 'big')
+
+def decode_time(b):
+    date = datetime.utcfromtimestamp(decode_int(b))
+    return date
 
 def count_zero_prefix(val):
     cpt = 1

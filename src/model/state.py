@@ -38,8 +38,7 @@ class State:
 
     def print_state(self):
         print("dictator_pkey :\t\t\t\t", self.dictator_pkey.hex())
-        date = datetime.utcfromtimestamp(int.from_bytes(
-            self.predecessor_timestamp, byteorder="big"))
+        date = util.decode_time(self.predecessor_timestamp)
         print("predecessor timestamp :\t\t\t\t", date)
 
         print("- - - Accounts - - -")
