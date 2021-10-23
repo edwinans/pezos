@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import socket
-from encode_message import encode_message
 import encode_message as em
 import decode_message as dm
 from model.operation import Operation
@@ -14,12 +13,12 @@ PORT = 1337
 def connect():
     global s, pk, sk, pk_bytes
     pk, sk = util.read_keys()
-    pk_bytes = util.encode_pk(pk)
+    pk_bytes = bytes(bytearray.fromhex(pk))
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.connect((HOST, PORT))
     seed = s.recv(1024)
     sig = util.encode_sig(seed, sk, pk)
-    s.send(pk_bytes)
+    s.send(em.encode_message(pk_bytes))
     s.send(sig)
     print('Received seed <- ', seed.hex())
 

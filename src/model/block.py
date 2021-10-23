@@ -23,8 +23,8 @@ class Block:
     def verify_predecessor(self):
         print("- - - - - -")
         print("Verify predecessor")
-        levelNumber = int.from_bytes(self.level, byteorder="big")
-        b_pred = ct.get_block(levelNumber-1)
+        level = int.from_bytes(self.level, byteorder="big")
+        b_pred = ct.get_block(level-1)
         b_pred_hash = util.hash(b_pred.get_block_value())
 
         if(self.predecessor == b_pred_hash):
@@ -38,8 +38,8 @@ class Block:
         print("- - - - - -")
         print("Verify timestamp")
 
-        levelNumber = self.get_level()
-        state_block = ct.get_block_state(levelNumber)
+        level = self.get_level()
+        state_block = ct.get_block_state(level)
         
         timestamp_pred = int.from_bytes(state_block.predecessor_timestamp, byteorder="big")
         if(int.from_bytes(self.timestamp, byteorder="big") >= timestamp_pred + 600):
@@ -47,7 +47,7 @@ class Block:
             return True, self.timestamp
         else:
             print("BAD TIMESTAMP")
-            return False, self.timestamp
+            return False, timestamp_pred + 600
 
     def verify_operations_hash(self):
         level = self.get_level()
@@ -63,8 +63,8 @@ class Block:
     def verify_state_hash(self):
         print("- - - - - -")
         print("Verify state hash")
-        levelNumber = self.get_level()
-        state_block = ct.get_block_state(levelNumber)
+        level = self.get_level()
+        state_block = ct.get_block_state(level)
         state_block_hash = util.hash(state_block.get_state_value())
         
         if(self.state_hash == state_block_hash):
@@ -77,8 +77,8 @@ class Block:
     def verify_signature(self):
         print("- - - - - -")
         print("Verify signature")
-        levelNumber = self.get_level()
-        state_block = ct.get_block_state(levelNumber)
+        level = self.get_level()
+        state_block = ct.get_block_state(level)
 
         verifyingkeybin = state_block.dictator_pkey
         
@@ -127,8 +127,8 @@ class Block:
         )
 
     def print_block(self):
-        levelNumber = self.get_level()
-        print("level :\t\t\t\t", levelNumber)
+        level = self.get_level()
+        print("level :\t\t\t\t", level)
         print("predecessor :\t\t\t", self.predecessor.hex())
         date = datetime.utcfromtimestamp(int.from_bytes(self.timestamp, byteorder="big"))
         print("timestamp :\t\t\t", date)
