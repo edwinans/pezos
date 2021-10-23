@@ -1,7 +1,5 @@
 import pyblake2 as blake
-import binascii
 from cryptography.hazmat.primitives.asymmetric import ed25519
-import hashlib
 import ed25519 as old_ed
 
 
@@ -20,8 +18,9 @@ def encode_sig(data, sk, pk):
 
 def sign(data, sk):
     sk_b = bytes(bytearray.fromhex(sk))
+    h_data = hash(data)
     private_key = ed25519.Ed25519PrivateKey.from_private_bytes(sk_b)
-    sig = private_key.sign(data)
+    sig = private_key.sign(h_data)
     return sig
 
 def read_keys():

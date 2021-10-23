@@ -68,7 +68,7 @@ def inject_operation(op):
     op_b = op.get_bytes()
     msg = em.encode_inject_operation(op_b)
     s.send(msg)
-    print('operation {} injected'.format(op.get_tag()))
+    print('operation {} injected: {}'.format(op.get_tag(), msg.hex()))
     return True
 
 
