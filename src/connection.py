@@ -32,6 +32,11 @@ def get_current_head():
     head_block = dm.decode_block(buf)
     return head_block
 
+def get_current_head_async():
+    buf = s.recv(1024)
+    print('Received head <- ', buf.hex())
+    head_block = dm.decode_block(buf)
+    return head_block
 
 def get_block(level):
     msg = em.encode_get_block(level)
@@ -64,32 +69,33 @@ def inject_operation(op):
     op_b = op.get_bytes()
     msg = em.encode_inject_operation(op_b)
     s.send(msg)
-    print('operation {} injected'.format(op.tag))
+    print('operation {} injected'.format(op.get_tag()))
+    return True
 
 
 def inject_bad_predecessor(hash):
     op = Operation(tag=1, hash=hash, user_pk=pk_bytes, sk=sk)
-    inject_operation(op)
+    return inject_operation(op)
 
 
 def inject_bad_timestamp(time):
     op = Operation(tag=2, time=time, user_pk=pk_bytes, sk=sk)
-    inject_operation(op)
+    return inject_operation(op)
 
 
 def inject_bad_operations_hash(hash):
     op = Operation(tag=3, hash=hash, user_pk=pk_bytes, sk=sk)
-    inject_operation(op)
+    return inject_operation(op)
 
 
 def inject_bad_context_hash(hash):
     op = Operation(tag=4, hash=hash, user_pk=pk_bytes, sk=sk)
-    inject_operation(op)
+    return inject_operation(op)
 
 
 def inject_bad_signature():
     op = Operation(tag=5, user_pk=pk_bytes, sk=sk)
-    inject_operation(op)
+    return inject_operation(op)
 
 
 def disconnect():

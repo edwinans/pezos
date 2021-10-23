@@ -100,20 +100,21 @@ class Block:
         print("- - - - - - - - - - - - - - - - - - - - - - - - -")
         check, hash = self.verify_predecessor()
         if(not check):
-            ct.inject_bad_predecessor(hash)
+            return ct.inject_bad_predecessor(hash)
         check, time = self.verify_timestamp()
         if (not check):
-            ct.inject_bad_timestamp(time)
+            return ct.inject_bad_timestamp(time)
         check, hash = self.verify_operations_hash()
         if (not check):
-            ct.inject_bad_operations_hash(hash)
+            return ct.inject_bad_operations_hash(hash)
         check, hash = self.verify_state_hash()
         if (not check):
-            ct.inject_bad_context_hash(hash)
+            return ct.inject_bad_context_hash(hash)
         check = self.verify_signature()
         if (not check):
-            ct.inject_bad_signature()
+            return ct.inject_bad_signature()
         print("- - - - - - - - - - - - - - - - - - - - - - - - -")
+        return False
 
     def get_block_value(self):
         return (

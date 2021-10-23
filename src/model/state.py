@@ -1,4 +1,5 @@
 from datetime import datetime
+import util
 
 class State:
     def __init__(
@@ -61,10 +62,8 @@ class Account:
 
     def print_account(self):
         print("user_pkey :\t\t\t", self.user_pkey.hex())
-        print("predecessorp :\t\t\t", self.predecessorp.hex())
-        date = datetime.utcfromtimestamp(
-            int.from_bytes(self.timestampp, byteorder="big"))
-        print("timestamp :\t\t\t", date)
-        print("operation_hash :\t\t", self.operations_hashp.hex())
-        print("context_hash :\t\t\t", self.context_hashp.hex())
-        print("signature :\t\t\t", self.signaturep.hex())
+        print("predecessor_pez :\t\t", util.decode_int(self.predecessorp))
+        print("timestamp_pez :\t\t\t", util.decode_int(self.timestampp))
+        print("operations_hash_pez :\t\t", util.decode_int(self.operations_hashp))
+        print("context_hash_pez :\t\t", util.decode_int(self.context_hashp))
+        print("signature_pez :\t\t\t", util.decode_int(self.signaturep))

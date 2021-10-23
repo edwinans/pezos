@@ -12,10 +12,9 @@ def operations_hash(ops):
     if (size == 0):
         return bytes(32)
     elif (size == 1):
-        util.hash(ops[0])
+        return util.hash(ops[0].get_bytes())
     else:
-        util.hash(operations_hash(ops[:size-1]) + util.hash(ops[size-1]))
-
+        return util.hash(operations_hash(ops[:size-1]) + util.hash(ops[size-1].get_bytes()))
 
 class Operation:
     def __init__(self, tag, user_pk, hash=None, time=None, signature=None, sk=None):
@@ -34,6 +33,9 @@ class Operation:
             data += user_pk
             self.signature = util.sign(data, sk)
 
+    def get_tag(self):
+        return util.decode_int(self.tag)
+        
     def get_bytes(self):
         res = self.tag
         if self.hash:
