@@ -3,7 +3,7 @@ import ed25519 as old_ed
 from model.operation import operations_hash
 
 import util
-import connection as ct
+import communication.connection as ct
 
 
 class Block:

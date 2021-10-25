@@ -1,4 +1,4 @@
-import connection as c
+from communication import connection as c
 from model.block import Block
 from model.operation import print_operations
 

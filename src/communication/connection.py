@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
 import socket
-import encode_message as em
-import decode_message as dm
+import communication.encode_message as em
+import communication.decode_message as dm
 from model.operation import Operation
 import util
 
