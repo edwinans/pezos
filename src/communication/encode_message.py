@@ -1,4 +1,4 @@
-import util
+from utility import util
 
 
 def encode_message(message):

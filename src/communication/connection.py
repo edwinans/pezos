@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 
 import socket
-import encode_message as em
-import decode_message as dm
+from communication import encode_message as em
+from communication import decode_message as dm
 from model.operation import Operation
-import util
+from utility import util
 
 HOST = '78.194.168.67'
 PORT = 1337

@@ -24,7 +24,7 @@ def sign(data, sk):
     return sig
 
 def read_keys():
-    f = open("../keys")
+    f = open("./src/utility/keys")
     pk = f.readline()
     sk = f.readline()
     return pk, sk

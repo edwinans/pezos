@@ -1,5 +1,4 @@
-import util
-
+from utility import util
 
 from model.state import State
 from model.block import Block
