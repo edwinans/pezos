@@ -25,6 +25,8 @@ def mine_demo():
                 print("- Verify state hash : VSH")
                 print("- Verify signature : VS")
                 print("- Verify all : VALL")
+
+                print("- Print state : PS")
             print("- Exit : E")
 
             command = input("... : ")
@@ -42,6 +44,8 @@ def mine_demo():
                 block.verify_signature()
             elif command == "VALL":
                 block.verify_all(debug=True)
+            elif command == "PS":
+                c.get_block_state(block.get_level()).print_state()
             elif command == "E":
                 exit = True
             

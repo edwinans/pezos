@@ -44,7 +44,7 @@ class State:
         print("- - - Accounts - - -")
         for acc in self.accounts:
             acc.print_account()
-    
+            print(" - - - ")
     def get_state_value(self):
         return self.dictator_pkey + self.predecessor_timestamp + self.nb_bytes_in_next_sequence + self.accounts_binaries
 
