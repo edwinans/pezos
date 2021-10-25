@@ -24,12 +24,12 @@ class Block:
         print("- - - - - -")
         print("Verify predecessor")
         level = int.from_bytes(self.level, byteorder="big")
-        b_pred = ct.get_block(level-1)
+        b_pred = ct.get_block(level - 1)
         b_pred_hash = util.hash(b_pred.get_block_value())
-        if(debug): 
+        if debug:
             print("Block predecessor : ", self.predecessor.hex())
             print("Block predecessor verification : ", b_pred_hash.hex())
-        if(self.predecessor == b_pred_hash):
+        if self.predecessor == b_pred_hash:
             print("-> PREDECESSOR OK")
             return True, self.predecessor
         else:
@@ -42,13 +42,13 @@ class Block:
 
         level = self.get_level()
         state_block = ct.get_block_state(level)
-        
+
         timestamp_pred = util.decode_int(state_block.predecessor_timestamp)
         ts = util.decode_int(self.timestamp)
-        if(debug): 
+        if debug:
             print("Block timestamp : ", datetime.utcfromtimestamp(timestamp_pred))
             print("Block timestamp verification : ", datetime.utcfromtimestamp(ts))
-        if(ts >= timestamp_pred + 600):
+        if ts >= timestamp_pred + 600:
             print("TIMESTAMP OK")
             return True, self.timestamp
         else:
@@ -59,10 +59,10 @@ class Block:
         level = self.get_level()
         ops = ct.get_block_operations(level)
         ops_hash = operations_hash(ops)
-        if(debug): 
+        if debug:
             print("Block predecessor : ", self.operations_hash.hex())
             print("Block predecessor verification : ", ops_hash.hex())
-        if (self.operations_hash == ops_hash):
+        if self.operations_hash == ops_hash:
             print("-> OPERATIONS_HASH OK")
             return True, self.operations_hash
         else:
@@ -75,10 +75,10 @@ class Block:
         level = self.get_level()
         state_block = ct.get_block_state(level)
         state_block_hash = util.hash(state_block.get_state_value())
-        if(debug): 
+        if debug:
             print("Block predecessor : ", self.state_hash.hex())
             print("Block predecessor verification : ", state_block_hash.hex())
-        if(self.state_hash == state_block_hash):
+        if self.state_hash == state_block_hash:
             print("-> STATE_HASH OK")
             return True, self.state_hash
         else:
@@ -92,37 +92,43 @@ class Block:
         state_block = ct.get_block_state(level)
 
         verifyingkeybin = state_block.dictator_pkey
-        
-        block_with_out_sign_value = self.level + self.predecessor + self.timestamp + self.operations_hash + self.state_hash
+
+        block_with_out_sign_value = (
+            self.level
+            + self.predecessor
+            + self.timestamp
+            + self.operations_hash
+            + self.state_hash
+        )
         block_without_sign_hash = util.hash(block_with_out_sign_value)
 
-        
         verifying_key = old_ed.VerifyingKey(verifyingkeybin.hex(), encoding="hex")
         try:
-            verifying_key.verify(self.signature.hex(), block_without_sign_hash, encoding='hex')
+            verifying_key.verify(
+                self.signature.hex(), block_without_sign_hash, encoding="hex"
+            )
             print("-> SIGNATURE OK")
             return True
         except old_ed.BadSignatureError:
             print("-> BAD SIGNATURE")
             return False
-            
 
-    def verify_all(self,debug=False):
+    def verify_all(self, debug=False):
         print("- - - - - - - - - - - - - - - - - - - - - - - - -")
         check, hash = self.verify_predecessor(debug)
-        if(not check):
+        if not check:
             return ct.inject_bad_predecessor(hash)
         check, time = self.verify_timestamp(debug)
-        if (not check):
+        if not check:
             return ct.inject_bad_timestamp(time)
         check, hash = self.verify_operations_hash(debug)
-        if (not check):
+        if not check:
             return ct.inject_bad_operations_hash(hash)
         check, hash = self.verify_state_hash(debug)
-        if (not check):
+        if not check:
             return ct.inject_bad_context_hash(hash)
         check = self.verify_signature()
-        if (not check):
+        if not check:
             return ct.inject_bad_signature()
         print("- - - - - - - - - - - - - - - - - - - - - - - - -")
         return False
