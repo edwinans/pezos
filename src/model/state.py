@@ -1,4 +1,3 @@
-from datetime import datetime
 from utility import util
 
 
@@ -15,22 +14,22 @@ class State:
         cpt = 0
         while cpt < int.from_bytes(nb_bytes_in_next_sequence, byteorder="big"):
 
-            userpkey = accounts[cpt : cpt + 32]
+            userpkey = accounts[cpt: cpt + 32]
             cpt += 32
 
-            predecessorpez = accounts[cpt : cpt + 4]
+            predecessorpez = accounts[cpt: cpt + 4]
             cpt += 4
 
-            timestamppez = accounts[cpt : cpt + 4]
+            timestamppez = accounts[cpt: cpt + 4]
             cpt += 4
 
-            operationhashpez = accounts[cpt : cpt + 4]
+            operationhashpez = accounts[cpt: cpt + 4]
             cpt += 4
 
-            contexthashpez = accounts[cpt : cpt + 4]
+            contexthashpez = accounts[cpt: cpt + 4]
             cpt += 4
 
-            signaturepez = accounts[cpt : cpt + 4]
+            signaturepez = accounts[cpt: cpt + 4]
             cpt += 4
 
             acc = Account(
@@ -83,6 +82,7 @@ class Account:
         print("user_pkey :\t\t\t", self.user_pkey.hex())
         print("predecessor_pez :\t\t", util.decode_int(self.predecessorp))
         print("timestamp_pez :\t\t\t", util.decode_int(self.timestampp))
-        print("operations_hash_pez :\t\t", util.decode_int(self.operations_hashp))
+        print("operations_hash_pez :\t\t",
+              util.decode_int(self.operations_hashp))
         print("context_hash_pez :\t\t", util.decode_int(self.context_hashp))
         print("signature_pez :\t\t\t", util.decode_int(self.signaturep))

@@ -1,9 +1,12 @@
 from datetime import datetime
-import ed25519 as old_ed
 from model.operation import operations_hash
 
-from utility import util
+from utility import util, config
 from communication import connection as ct
+
+"""
+Block representation.
+"""
 
 
 class Block:
@@ -19,6 +22,11 @@ class Block:
 
     def get_level(self):
         return util.decode_int(self.level)
+
+    """
+    Verify the hash of the predecessor block,
+    if invalid, return false and the valid hash.
+    """
 
     def verify_predecessor(self, debug=False):
         print("- - - - - -")
@@ -36,6 +44,11 @@ class Block:
             print("-> BAD PREDECESSOR")
             return False, b_pred_hash
 
+    """
+    Compare time with the predecessor,
+    If larger than the TIME_OUT return False, and a valid timestamp.
+    """
+
     def verify_timestamp(self, debug=False):
         print("- - - - - -")
         print("Verify timestamp")
@@ -47,13 +60,19 @@ class Block:
         ts = util.decode_int(self.timestamp)
         if debug:
             print("Block timestamp : ", datetime.utcfromtimestamp(timestamp_pred))
-            print("Block timestamp verification : ", datetime.utcfromtimestamp(ts))
-        if ts >= timestamp_pred + 600:
+            print("Block timestamp verification : ",
+                  datetime.utcfromtimestamp(ts))
+        if ts >= timestamp_pred + config.TIME_OUT:
             print("TIMESTAMP OK")
             return True, self.timestamp
         else:
             print("-> BAD TIMESTAMP")
             return False, util.encode_int(timestamp_pred + 600, 8)
+
+    """
+    Check operations hash,
+    if invalid return true and the valid hash.
+    """
 
     def verify_operations_hash(self, debug=False):
         level = self.get_level()
@@ -68,6 +87,11 @@ class Block:
         else:
             print("-> BAD OPERATIONS_HASH")
             return False, ops_hash
+
+    """
+    Verify current state hash,
+    if invalid, return false and the valid hash.
+    """
 
     def verify_state_hash(self, debug=False):
         print("- - - - - -")
@@ -85,6 +109,11 @@ class Block:
             print("-> BAD STATE_HASH")
             return False, state_block_hash
 
+    """
+    Verify the hash of signature of the block,
+    if invalid, return false and the valid hash.
+    """
+
     def verify_signature(self):
         print("- - - - - -")
         print("Verify signature")
@@ -100,18 +129,18 @@ class Block:
             + self.operations_hash
             + self.state_hash
         )
-        block_without_sign_hash = util.hash(block_with_out_sign_value)
 
-        verifying_key = old_ed.VerifyingKey(verifyingkeybin.hex(), encoding="hex")
-        try:
-            verifying_key.verify(
-                self.signature.hex(), block_without_sign_hash, encoding="hex"
-            )
+        block_without_sign_hash = util.hash(block_with_out_sign_value)
+        if util.verify_signature(self.signature, verifyingkeybin, block_without_sign_hash):
             print("-> SIGNATURE OK")
             return True
-        except old_ed.BadSignatureError:
+        else:
             print("-> BAD SIGNATURE")
             return False
+
+    """
+    Run all verifier and injects corresponding operation.
+    """
 
     def verify_all(self, debug=False):
         print("- - - - - - - - - - - - - - - - - - - - - - - - -")

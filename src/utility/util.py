@@ -1,6 +1,6 @@
 import pyblake2 as blake
 from cryptography.hazmat.primitives.asymmetric import ed25519
-import ed25519 as old_ed
+from cryptography.exceptions import InvalidSignature
 from datetime import datetime
 
 
@@ -9,26 +9,8 @@ def encode_pk(pk):
     return encode_int(32, 2) + pk_b
 
 
-def encode_sig(data, sk, pk):
-    sk_b = bytes(bytearray.fromhex(sk))
-    pk_b = bytes(bytearray.fromhex(pk))
-    h_data = hash(data)
-    private_key = ed25519.Ed25519PrivateKey.from_private_bytes(sk_b)
-    public_key = ed25519.Ed25519PublicKey.from_public_bytes(pk_b)
-    sig = private_key.sign(h_data)
-    return encode_int(64, 2) + sig
-
-
-def sign(data, sk):
-    sk_b = bytes(bytearray.fromhex(sk))
-    h_data = hash(data)
-    private_key = ed25519.Ed25519PrivateKey.from_private_bytes(sk_b)
-    sig = private_key.sign(h_data)
-    return sig
-
-
 def read_keys():
-    f = open("./src/utility/keys")
+    f = open("utility/keys")
     pk = f.readline()
     sk = f.readline()
     return pk, sk
@@ -48,14 +30,32 @@ def decode_time(b):
     date = datetime.utcfromtimestamp(decode_int(b))
     return date
 
+# - - - - - - - - - - - - - - - - - - - Signing - - - - - - - - - - - - - - - - -
 
-def count_zero_prefix(val):
-    cpt = 1
-    for i in val:
-        if i == "1":
-            break
-        cpt = cpt + 1
-    return cpt
+
+def encode_sig(data, sk):
+    sk_b = bytes(bytearray.fromhex(sk))
+    h_data = hash(data)
+    private_key = ed25519.Ed25519PrivateKey.from_private_bytes(sk_b)
+    sig = private_key.sign(h_data)
+    return encode_int(64, 2) + sig
+
+
+def sign(data, sk):
+    sk_b = bytes(bytearray.fromhex(sk))
+    h_data = hash(data)
+    private_key = ed25519.Ed25519PrivateKey.from_private_bytes(sk_b)
+    sig = private_key.sign(h_data)
+    return sig
+
+
+def verify_signature(sig, pk, data):
+    public_key = ed25519.Ed25519PublicKey.from_public_bytes(pk)
+    try:
+        public_key.verify(sig, data)
+        return True
+    except InvalidSignature:
+        return False
 
 
 # - - - - - - - - - - - - - - - - - - - Hash functions - - - - - - - - - - - - - - - - -
@@ -72,26 +72,3 @@ def hash_string(string):
 def concat_hash(hash1, hash2):
     newHash = hash1 + hash2
     return blake.blake2b(newHash, digest_size=32).digest()
-
-
-# - - - - - - - - - - - - - - - - - - - Key encryption - - - - - - - - - - - - - - - - - - -
-
-
-def create_keypair():
-    privKey, pubKey = ed25519.create_keypair()
-    # print("Private key (32 bytes):", privKey.to_ascii(encoding='hex'))
-    # print("Public key (32 bytes): ", pubKey.to_ascii(encoding='hex'))
-    return privKey, pubKey
-
-
-def create_signature(privateKey, message):
-    signature = privateKey.sign(message, encoding="hex")
-    return signature
-
-
-def verify_signature(publicKey, messageToVerify, signature):
-    try:
-        publicKey.verify(signature, messageToVerify, encoding="hex")
-        return True
-    except ed25519.BadSignatureError:
-        return False

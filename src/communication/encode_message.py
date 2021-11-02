@@ -1,5 +1,9 @@
 from utility import util
 
+"""
+Encode each message into bytes
+"""
+
 
 def encode_message(message):
     return util.encode_int(len(message), size=2) + message
