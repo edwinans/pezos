@@ -1,6 +1,5 @@
 from utility import util
 
-
 def print_operations(ops):
     print("- - - Operations - - -")
     for op in ops:

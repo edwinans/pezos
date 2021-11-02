@@ -5,9 +5,8 @@ from model.block import Block
 from model.operation import Operation
 
 """
-Decode byte messages and wrap to the corresponding class
+Decode byte messages and wrap it to the corresponding class.
 """
-
 
 def decode_block(msg):
     block = decode_message(msg)

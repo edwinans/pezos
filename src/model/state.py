@@ -1,6 +1,5 @@
 from utility import util
 
-
 class State:
     def __init__(
         self, dictator_pkey, predecessor_timestamp, nb_bytes_in_next_sequence, accounts

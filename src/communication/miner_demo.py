@@ -1,7 +1,7 @@
 import communication.connection as c
 
 """
-Interactive demo version of the miner to debug & test
+Interactive demo version of the miner to debug & test.
 """
 
 def mine_demo():

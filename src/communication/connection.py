@@ -7,8 +7,8 @@ from model.operation import Operation
 from utility import util, config
 
 """
-Establish connection with the servers
-receive seed, send public_key and signature
+Establish connection with the server.
+receive seed, send public_key and signature.
 """
 def connect():
     global s, pk, sk, pk_bytes

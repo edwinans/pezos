@@ -8,7 +8,6 @@ from communication import connection as ct
 Block representation.
 """
 
-
 class Block:
     def __init__(
         self, level, predecessor, timestamp, operations_hash, state_hash, signature
