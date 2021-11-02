@@ -20,20 +20,20 @@ def connect():
     sig = util.encode_sig(seed, sk, pk)
     s.send(em.encode_message(pk_bytes))
     s.send(sig)
-    print('Received seed <- ', seed.hex())
+    print('<- seed ', seed.hex())
 
 
 def get_current_head():
     get_hd = em.encode_get_currrent_head()
     s.send(get_hd)
     buf = s.recv(1024)
-    print('Received head <- ', buf.hex())
+    print('<- head')
     head_block = dm.decode_block(buf)
     return head_block
 
 def get_current_head_async():
     buf = s.recv(1024)
-    print('Received head <- ', buf.hex())
+    print('<- Received head')
     head_block = dm.decode_block(buf)
     return head_block
 
@@ -41,8 +41,8 @@ def get_block(level):
     msg = em.encode_get_block(level)
     s.send(msg)
     buf = s.recv(1024)
-    print('Received block <- ', buf.hex())
     block = dm.decode_block(buf)
+    print('<- block ', block.get_level())
     return block
 
 
@@ -50,8 +50,8 @@ def get_block_state(level):
     msg = em.encode_get_state(level)
     s.send(msg)
     buf = s.recv(1024)
-    print('Received block_state <- ', buf.hex())
     state = dm.decode_state(buf)
+    print('<- block_state')
     return state
 
 
@@ -59,7 +59,7 @@ def get_block_operations(level):
     msg = em.encode_get_block_operations(level)
     s.send(msg)
     buf = s.recv(1024)
-    print('Received block_operations <- ', buf.hex())
+    print('<- block_operations')
     operations = dm.decode_operation_list(buf)
     return operations
 
@@ -68,7 +68,7 @@ def inject_operation(op):
     op_b = op.get_bytes()
     msg = em.encode_inject_operation(op_b)
     s.send(msg)
-    print('operation {} injected: {}'.format(op.get_tag(), msg.hex()))
+    print('-> operation {} injected: {}'.format(op.get_tag(), msg.hex()))
     return True
 
 
