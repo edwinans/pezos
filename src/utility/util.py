@@ -2,7 +2,7 @@ import pyblake2 as blake
 from cryptography.hazmat.primitives.asymmetric import ed25519
 from cryptography.exceptions import InvalidSignature
 from datetime import datetime
-
+import os
 
 def encode_pk(pk):
     pk_b = bytes(bytearray.fromhex(pk))
@@ -10,7 +10,8 @@ def encode_pk(pk):
 
 
 def read_keys():
-    f = open("utility/keys")
+    keysFile = (os.path.join(os.path.dirname(os.path.dirname(__file__)),"utility/keys"))
+    f = open(keysFile)
     pk = f.readline()
     sk = f.readline()
     return pk, sk
