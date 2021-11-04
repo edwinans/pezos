@@ -13,7 +13,7 @@ def mine_demo():
                 print()
                 print("Current block : ")
                 block.print_block()
-                input()
+                input("\n - - - PRESS ENTER TO CONTINUE - - - \n")
 
             print()
             print("Menu : ")

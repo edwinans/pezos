@@ -27,14 +27,16 @@ def get_current_head():
     get_hd = em.encode_get_currrent_head()
     s.send(get_hd)
     buf = s.recv(1024)
-    print("Received head <- ", buf.hex())
+    print("Received head")
+    # print("Received head <- ", buf.hex())
     head_block = dm.decode_block(buf)
     return head_block
 
 
 def get_current_head_async():
     buf = s.recv(1024)
-    print("Received head <- ", buf.hex())
+    print("Received head")
+    # print("Received head <- ", buf.hex())
     head_block = dm.decode_block(buf)
     return head_block
 
@@ -43,7 +45,8 @@ def get_block(level):
     msg = em.encode_get_block(level)
     s.send(msg)
     buf = s.recv(1024)
-    print("Received block <- ", buf.hex())
+    print("Received block")
+    # print("Received block <- ", buf.hex())
     block = dm.decode_block(buf)
     return block
 
@@ -52,7 +55,8 @@ def get_block_state(level):
     msg = em.encode_get_state(level)
     s.send(msg)
     buf = s.recv(1024)
-    print("Received block_state <- ", buf.hex())
+    print("Received block_state")
+    # print("Received block_state <- ", buf.hex())
     state = dm.decode_state(buf)
     return state
 
@@ -61,7 +65,8 @@ def get_block_operations(level):
     msg = em.encode_get_block_operations(level)
     s.send(msg)
     buf = s.recv(1024)
-    print("Received block_operations <- ", buf.hex())
+    print("Received block_operations")
+    # print("Received block_operations <- ", buf.hex())
     operations = dm.decode_operation_list(buf)
     return operations
 
