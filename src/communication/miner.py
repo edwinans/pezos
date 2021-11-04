@@ -1,8 +1,9 @@
 import communication.connection as c
-from model.block import Block
-from model.operation import print_operations
 
-
+"""
+Miner loop
+block and waits for the current head to verify it.
+"""
 def mine():
     try:
         c.connect()

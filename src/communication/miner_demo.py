@@ -1,7 +1,8 @@
 import communication.connection as c
-from model.block import Block
-from model.operation import print_operations
 
+"""
+Interactive demo version of the miner to debug & test.
+"""
 
 def mine_demo():
     try:
@@ -50,7 +51,7 @@ def mine_demo():
             elif command == "E":
                 exit = True
 
-    except e:
+    except Exception as e:
         print(e)
         c.disconnect()
     c.disconnect()

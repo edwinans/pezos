@@ -4,20 +4,20 @@ import socket
 from communication import encode_message as em
 from communication import decode_message as dm
 from model.operation import Operation
-from utility import util
+from utility import util, config
 
-HOST = "78.194.168.67"
-PORT = 1337
-
-
+"""
+Establish connection with the server.
+receive seed, send public_key and signature.
+"""
 def connect():
     global s, pk, sk, pk_bytes
     pk, sk = util.read_keys()
     pk_bytes = bytes(bytearray.fromhex(pk))
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    s.connect((HOST, PORT))
+    s.connect((config.HOST, config.PORT))
     seed = s.recv(1024)
-    sig = util.encode_sig(seed, sk, pk)
+    sig = util.encode_sig(seed, sk)
     s.send(em.encode_message(pk_bytes))
     s.send(sig)
     print("Received seed <- ", seed.hex())
