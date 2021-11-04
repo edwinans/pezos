@@ -11,7 +11,7 @@ def encode_pk(pk):
 
 
 def read_keys():
-    keysFile = os.path.join(os.path.dirname(os.path.dirname(__file__)), "utility/keys")
+    keysFile = "./src/utility/keys" 
     f = open(keysFile)
     pk = f.readline()
     sk = f.readline()
