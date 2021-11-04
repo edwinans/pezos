@@ -8,6 +8,7 @@ from communication import connection as ct
 Block representation.
 """
 
+
 class Block:
     def __init__(
         self, level, predecessor, timestamp, operations_hash, state_hash, signature
@@ -59,8 +60,7 @@ class Block:
         ts = util.decode_int(self.timestamp)
         if debug:
             print("Block timestamp : ", datetime.utcfromtimestamp(timestamp_pred))
-            print("Block timestamp verification : ",
-                  datetime.utcfromtimestamp(ts))
+            print("Block timestamp verification : ", datetime.utcfromtimestamp(ts))
         if ts >= timestamp_pred + config.TIME_OUT:
             print("TIMESTAMP OK")
             return True, self.timestamp
@@ -130,7 +130,9 @@ class Block:
         )
 
         block_without_sign_hash = util.hash(block_with_out_sign_value)
-        if util.verify_signature(self.signature, verifyingkeybin, block_without_sign_hash):
+        if util.verify_signature(
+            self.signature, verifyingkeybin, block_without_sign_hash
+        ):
             print("-> SIGNATURE OK")
             return True
         else:

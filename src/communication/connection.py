@@ -10,6 +10,8 @@ from utility import util, config
 Establish connection with the server.
 receive seed, send public_key and signature.
 """
+
+
 def connect():
     global s, pk, sk, pk_bytes
     pk, sk = util.read_keys()
@@ -48,6 +50,7 @@ def get_block(level):
     print("Received block")
     # print("Received block <- ", buf.hex())
     block = dm.decode_block(buf)
+    print("<- block ", block.get_level())
     return block
 
 
@@ -58,6 +61,7 @@ def get_block_state(level):
     print("Received block_state")
     # print("Received block_state <- ", buf.hex())
     state = dm.decode_state(buf)
+    print("<- block_state")
     return state
 
 

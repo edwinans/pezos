@@ -1,5 +1,6 @@
 from utility import util
 
+
 def print_operations(ops):
     print("- - - Operations - - -")
     for op in ops:
@@ -14,8 +15,7 @@ def operations_hash(ops):
         return util.hash(ops[0].get_bytes())
     else:
         return util.hash(
-            operations_hash(ops[: size - 1]) +
-            util.hash(ops[size - 1].get_bytes())
+            operations_hash(ops[: size - 1]) + util.hash(ops[size - 1].get_bytes())
         )
 
 

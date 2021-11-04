@@ -4,6 +4,8 @@ import communication.connection as c
 Miner loop
 block and waits for the current head to verify it.
 """
+
+
 def mine():
     try:
         c.connect()

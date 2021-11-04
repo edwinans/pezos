@@ -4,13 +4,14 @@ from cryptography.exceptions import InvalidSignature
 from datetime import datetime
 import os
 
+
 def encode_pk(pk):
     pk_b = bytes(bytearray.fromhex(pk))
     return encode_int(32, 2) + pk_b
 
 
 def read_keys():
-    keysFile = (os.path.join(os.path.dirname(os.path.dirname(__file__)),"utility/keys"))
+    keysFile = os.path.join(os.path.dirname(os.path.dirname(__file__)), "utility/keys")
     f = open(keysFile)
     pk = f.readline()
     sk = f.readline()
@@ -30,6 +31,7 @@ def decode_int(b):
 def decode_time(b):
     date = datetime.utcfromtimestamp(decode_int(b))
     return date
+
 
 # - - - - - - - - - - - - - - - - - - - Signing - - - - - - - - - - - - - - - - -
 
