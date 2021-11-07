@@ -49,9 +49,10 @@ class Block:
     If larger than the TIME_OUT return False, and a valid timestamp.
     """
 
-    def verify_timestamp(self, debug=False):
+    def verify_timestamp(self, debug=False, timestamp_min=600):
         print("- - - - - -")
         print("Verify timestamp")
+
 
         level = self.get_level()
         state_block = ct.get_block_state(level)
@@ -66,7 +67,7 @@ class Block:
             return True, self.timestamp
         else:
             print("-> BAD TIMESTAMP")
-            return False, util.encode_int(timestamp_pred + 600, 8)
+            return False, util.encode_int(timestamp_pred + timestamp_min, 8)
 
     """
     Check operations hash,
@@ -143,12 +144,12 @@ class Block:
     Run all verifier and injects corresponding operation.
     """
 
-    def verify_all(self, debug=False):
+    def verify_all(self, debug=False, timestamp_min=600):
         print("- - - - - - - - - - - - - - - - - - - - - - - - -")
         check, hash = self.verify_predecessor(debug)
         if not check:
             return ct.inject_bad_predecessor(hash)
-        check, time = self.verify_timestamp(debug)
+        check, time = self.verify_timestamp(debug, timestamp_min=timestamp_min)
         if not check:
             return ct.inject_bad_timestamp(time)
         check, hash = self.verify_operations_hash(debug)

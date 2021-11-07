@@ -5,7 +5,7 @@ Interactive demo version of the miner to debug & test.
 """
 
 
-def mine_demo():
+def mine_demo(argumentsWithNoValue, argumentWithValue):
     try:
         c.connect()
         exit = False
@@ -38,7 +38,11 @@ def mine_demo():
             elif command == "VP":
                 block.verify_predecessor(debug=True)
             elif command == "VT":
-                block.verify_timestamp(debug=True)
+                
+                if("timestamp" in argumentWithValue):
+                    block.verify_timestamp(debug=True, timestamp_min=int(argumentWithValue["timestamp"]))
+                else:
+                    block.verify_timestamp(debug=True)
             elif command == "VOH":
                 block.verify_operations_hash(debug=True)
             elif command == "VSH":
